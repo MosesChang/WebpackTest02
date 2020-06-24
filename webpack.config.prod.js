@@ -1,7 +1,10 @@
 const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+  mode: 'production',
+  devtool: 'source-map',
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -18,6 +21,20 @@ module.exports = {
             presets: ['@babel/preset-env']
           }
         }
+      },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: "style-loader"
+          },
+          {
+            loader: "css-loader",
+            options: {
+              modules: true
+            }
+          }
+        ]
       }
     ]
   },
@@ -38,5 +55,8 @@ module.exports = {
       sourceMap: false,
       parallel: true
     }),
+    new HtmlWebpackPlugin({
+      template: './src/index.html'
+    })
   ]
 };
